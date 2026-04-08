@@ -9,12 +9,12 @@
             "hash": "sha256:e54843f0beac80c4f63dc430f8ccc53ae6d19e729a040b9a9ff9da3b45349662"
         }
     },
-    "bin": "GalaxyBudsClient_Windows_64bit_Portable.exe",
-    "shortcuts": [
-        ["GalaxyBudsClient_Windows_64bit_Portable.exe", "Galaxy Buds Client"]
-    ],
     "pre_install": [
         "Rename-Item \"$dir\\GalaxyBudsClient_Windows_64bit_Portable.exe\" 'GalaxyBudsClient.exe' -ErrorAction SilentlyContinue"
+    ],
+    "bin": [["GalaxyBudsClient.exe", "GalaxyBudsClient"]],
+    "shortcuts": [
+        ["GalaxyBudsClient.exe", "Galaxy Buds Client"]
     ],
     "checkver": {
         "url": "https://api.github.com/repos/timschneeb/GalaxyBudsClient/releases/latest",
