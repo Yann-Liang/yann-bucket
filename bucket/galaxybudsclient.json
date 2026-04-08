@@ -1,27 +1,21 @@
 {
     "version": "5.2.0",
-    "description": "GalaxyBudsClient - 非官方三星Galaxy Buds管理器，支持固件刷写、诊断等高级功能 (便携版)",
+    "description": "GalaxyBudsClient - 非官方三星Galaxy Buds管理器 (便携版，无需安装直接运行)",
     "homepage": "https://github.com/timschneeb/GalaxyBudsClient",
-    "license": {
-        "identifier": "GPL-3.0",
-        "url": "https://github.com/timschneeb/GalaxyBudsClient/blob/master/LICENSE"
-    },
+    "license": "GPL-3.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/timschneeb/GalaxyBudsClient/releases/download/5.2.0/GalaxyBudsClient_Windows_64bit_Portable.exe#/dl.7z",
+            "url": "https://github.com/timschneeb/GalaxyBudsClient/releases/download/5.2.0/GalaxyBudsClient_Windows_64bit_Portable.exe",
             "hash": "sha256:e54843f0beac80c4f63dc430f8ccc53ae6d19e729a040b9a9ff9da3b45349662"
         }
     },
-    "installer": {
-        "script": [
-            "Expand-7zipArchive \"$dir\\dl.7z\" \"$dir\" -Removal",
-            "Remove-Item \"$dir\\`$*\" -Recurse -Force -ErrorAction SilentlyContinue"
-        ]
-    },
+    "bin": "GalaxyBudsClient_Windows_64bit_Portable.exe",
     "shortcuts": [
-        ["GalaxyBudsClient.exe", "Galaxy Buds Client"]
+        ["GalaxyBudsClient_Windows_64bit_Portable.exe", "Galaxy Buds Client"]
     ],
-    "bin": "GalaxyBudsClient.exe",
+    "pre_install": [
+        "Rename-Item \"$dir\\GalaxyBudsClient_Windows_64bit_Portable.exe\" 'GalaxyBudsClient.exe' -ErrorAction SilentlyContinue"
+    ],
     "checkver": {
         "url": "https://api.github.com/repos/timschneeb/GalaxyBudsClient/releases/latest",
         "jsonpath": "$.tag_name",
@@ -30,8 +24,11 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/timschneeb/GalaxyBudsClient/releases/download/$version/GalaxyBudsClient_Windows_64bit_Portable.exe#/dl.7z"
+                "url": "https://github.com/timschneeb/GalaxyBudsClient/releases/download/$version/GalaxyBudsClient_Windows_64bit_Portable.exe"
             }
+        },
+        "hash": {
+            "url": "$url.sha256"
         }
     },
     "notes": [
