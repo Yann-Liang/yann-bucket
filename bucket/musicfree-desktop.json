@@ -6,24 +6,13 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/maotoumao/MusicFreeDesktop/releases/download/v0.0.8/MusicFree-0.0.8-win32-x64-portable.zip",
-            "hash": "sha256:b84ef7feced17a95dd704db9968867726008d782619d511656e5ece059951399",
-            "noextract": true
+            "hash": "sha256:b84ef7feced17a95dd704db9968867726008d782619d511656e5ece059951399"
         }
     },
     "pre_install": [
-        "# 结束可能正在运行的旧程序",
-        "Stop-Process -Name MusicFreeDesktop -Force -ErrorAction SilentlyContinue",
-        "# 删除根目录下所有旧文件（确保干净）",
-        "Get-ChildItem -Path \"$dir\" -Exclude \"MusicFree-$version-win32-x64-portable.zip\" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue",
-        "# 手动解压外层 zip（使用 7z，输出到 $dir）",
-        "7z x \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -o\"$dir\" -y",
-        "# 解压后得到内层 zip: $dir\\MusicFree-$version-win32-x64-portable.zip（注意文件名相同，会覆盖原文件？实际上 7z 解压外层 zip 会生成内层 zip，但原外层 zip 也在同一目录，需要区分）",
-        "# 外层 zip 已被 7z 解压，原文件还在，但解压出来的内层 zip 与源文件同名，会覆盖？实际上 7z x 解压时，如果输出目录有同名文件，会覆盖。我们稍后删除源文件即可。",
-        "# 解压内层 zip 到 $dir",
-        "7z x \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -o\"$dir\" -aoa -y",
-        "# 删除内层 zip（即源文件，因为已经被覆盖或原文件还在）",
+        "Expand-Archive -Path \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -DestinationPath \"$dir\" -Force",
         "Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force",
-        "# 如果解压后出现同名文件夹，将其内容上移到 $dir",
+        "# 检查是否解压出同名目录，若有则将其内容上移",
         "if (Test-Path \"$dir\\MusicFree-$version-win32-x64-portable\") {",
         "    Get-ChildItem \"$dir\\MusicFree-$version-win32-x64-portable\" | Move-Item -Destination \"$dir\" -Force",
         "    Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable\" -Force",
@@ -43,8 +32,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/maotoumao/MusicFreeDesktop/releases/download/v$version/MusicFreeDesktop-$version-win32-x64-portable.zip",
-                "noextract": true
+                "url": "https://github.com/maotoumao/MusicFreeDesktop/releases/download/v$version/MusicFreeDesktop-$version-win32-x64-portable.zip"
             }
         },
         "hash": {
