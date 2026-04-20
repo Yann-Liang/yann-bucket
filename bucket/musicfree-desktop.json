@@ -10,7 +10,7 @@
         }
     },
     "pre_install": [
-        "Expand-Archive -Path \"$dir\\MusicFree-0.0.8-win32-x64-portable.zip\" -DestinationPath \"$dir\" -Force",
+        "7z x \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -o\"$dir\" -y",
         "Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force",
         "if (Test-Path \"$dir\\MusicFree-$version-win32-x64-portable\") {",
         "    Get-ChildItem \"$dir\\MusicFree-$version-win32-x64-portable\" | Move-Item -Destination \"$dir\" -Force",
