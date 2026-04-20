@@ -10,12 +10,13 @@
         }
     },
     "pre_install": [
-        "$tempDir = Join-Path $env:TEMP \"musicfree-$([System.Guid]::NewGuid().ToString())\"",
-        "New-Item -ItemType Directory -Path $tempDir -Force | Out-Null",
-        "Expand-Archive -Path \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -DestinationPath $tempDir -Force",
-        "Get-ChildItem $tempDir | Copy-Item -Destination $dir -Recurse -Force",
-        "Remove-Item $tempDir -Recurse -Force",
-        "Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force"
+        "7z x \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -o\"$dir\" -aoa -y",
+        "Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force",
+        "# 如果解压后出现同名文件夹，将其内容上移到 $dir",
+        "if (Test-Path \"$dir\\MusicFree-$version-win32-x64-portable\") {",
+        "    Get-ChildItem \"$dir\\MusicFree-$version-win32-x64-portable\" | Move-Item -Destination \"$dir\" -Force",
+        "    Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable\" -Force",
+        "}"
     ],
     "shortcuts": [
         [
