@@ -10,7 +10,13 @@
         }
     },
     "pre_install": [
+        "# 结束可能正在运行的旧程序，避免文件锁定",
+        "Stop-Process -Name MusicFreeDesktop -Force -ErrorAction SilentlyContinue",
+        "# 删除除内层 zip 以外的所有旧文件/目录（防止残留文件被锁定）",
+        "Get-ChildItem -Path \"$dir\" -Exclude \"MusicFree-$version-win32-x64-portable.zip\" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue",
+        "# 使用 7z 解压内层 zip（-aoa 强制覆盖，-y 自动确认）",
         "7z x \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -o\"$dir\" -aoa -y",
+        "# 删除内层 zip",
         "Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force",
         "# 如果解压后出现同名文件夹，将其内容上移到 $dir",
         "if (Test-Path \"$dir\\MusicFree-$version-win32-x64-portable\") {",
