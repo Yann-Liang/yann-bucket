@@ -11,9 +11,15 @@
     },
     "installer": {
         "script": [
-            "7z x \"$dir\\dl.7z\" -o\"$dir\" -y",
-            "7z x \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -o\"$dir\" -aoa -y",
-            "Remove-Item \"$dir\\dl.7z\", \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force"
+            "# 解压内层 zip",
+            "Expand-Archive -Path \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -DestinationPath \"$dir\" -Force",
+            "# 删除内层 zip",
+            "Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force",
+            "# 如果解压后出现同名文件夹，将内容上移",
+            "if (Test-Path \"$dir\\MusicFree-$version-win32-x64-portable\") {",
+            "    Get-ChildItem \"$dir\\MusicFree-$version-win32-x64-portable\" | Move-Item -Destination \"$dir\" -Force",
+            "    Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable\" -Force",
+            "}"
         ]
     },
     "shortcuts": [
