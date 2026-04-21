@@ -5,24 +5,15 @@
     "license": "AGPL-3.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/maotoumao/MusicFreeDesktop/releases/download/v0.0.8/MusicFree-0.0.8-win32-x64-portable.zip",
-            "hash": "sha256:b84ef7feced17a95dd704db9968867726008d782619d511656e5ece059951399",
-            "noextract": true
+            "url": "https://github.com/maotoumao/MusicFreeDesktop/releases/download/v0.0.8/MusicFree-0.0.8-win32-x64-portable.zip#/dl.7z",
+            "hash": "sha256:b84ef7feced17a95dd704db9968867726008d782619d511656e5ece059951399"
         }
     },
     "installer": {
         "script": [
-            "$tempDir = Join-Path $env:TEMP \"musicfree_$([System.Guid]::NewGuid())\"",
-            "New-Item -ItemType Directory -Path $tempDir -Force | Out-Null",
-            "7z x \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -o\"$tempDir\" -y",
-            "$innerZip = Get-ChildItem \"$tempDir\" -Filter \"*.zip\" | Select-Object -First 1",
-            "7z x \"$innerZip.FullName\" -o\"$dir\" -aoa -y",
-            "Remove-Item \"$tempDir\" -Recurse -Force",
-            "Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force",
-            "if (Test-Path \"$dir\\MusicFree-$version-win32-x64-portable\") {",
-            "    Get-ChildItem \"$dir\\MusicFree-$version-win32-x64-portable\" | Move-Item -Destination \"$dir\" -Force",
-            "    Remove-Item \"$dir\\MusicFree-$version-win32-x64-portable\" -Force",
-            "}"
+            "7z x \"$dir\\dl.7z\" -o\"$dir\" -y",
+            "7z x \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -o\"$dir\" -aoa -y",
+            "Remove-Item \"$dir\\dl.7z\", \"$dir\\MusicFree-$version-win32-x64-portable.zip\" -Force"
         ]
     },
     "shortcuts": [
@@ -39,8 +30,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/maotoumao/MusicFreeDesktop/releases/download/v$version/MusicFreeDesktop-$version-win32-x64-portable.zip",
-                "noextract": true
+                "url": "https://github.com/maotoumao/MusicFreeDesktop/releases/download/v$version/MusicFreeDesktop-$version-win32-x64-portable.zip#/dl.7z"
             }
         },
         "hash": {
