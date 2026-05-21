@@ -10,12 +10,15 @@
         }
     },
     "bin": [
-        ["cli-proxy-api.exe", "cliproxyapi"]
+        "cli-proxy-api.exe",
+        "cli-proxy-api.ps1"
     ],
-    "workingdir": "$persist_dir",
-    "persist": ["config.yaml"],
+    "persist": [
+        "config.yaml"
+    ],
     "pre_install": [
-        "if (-not (Test-Path \"$persist_dir/config.yaml\")) { Copy-Item \"$dir/config.example.yaml\" \"$persist_dir/config.yaml\" -Force }"
+        "if (-not (Test-Path \"$persist_dir\\config.yaml\")) { Copy-Item \"$dir\\config.example.yaml\" \"$persist_dir\\config.yaml\" -Force }",
+        "\"$config = \\\"$persist_dir\\\\config.yaml\\\"\\nif ($args -notcontains '--config' -and $args -notcontains '-c') {\\n    & \\\"$dir\\\\cli-proxy-api.exe\\\" --config $config @args\\n} else {\\n    & \\\"$dir\\\\cli-proxy-api.exe\\\" @args\\n}\" | Out-File -Encoding utf8 \"$dir\\cli-proxy-api.ps1\""
     ],
     "checkver": {
         "github": "https://github.com/router-for-me/CLIProxyAPI"
