@@ -15,7 +15,7 @@
     "persist": [
         "config.yaml"
     ],
-    "env": {
+    "env_set": {
         "CLIPROXYAPI_CONFIG": "$persist_dir/config.yaml"
     },
     "pre_install": [
