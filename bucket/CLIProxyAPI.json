@@ -19,10 +19,7 @@
         "if (-not (Test-Path \"$persist_dir/config.yaml\")) { Copy-Item \"$dir/config.example.yaml\" \"$persist_dir/config.yaml\" -Force }"
     ],
     "post_install": [
-        "$p = \"$persist_dir\\config.yaml\"",
-        "$c = \"$dir\\cli-proxy-api.exe\"",
-        "\"`$a = `$args; if (`$a -notcontains '--config') { & `$c --config `$p @`$a } else { & `$c @`$a }\" | Out-File -Encoding utf8 \"$env:SCOOP\\shims\\cli-proxy-api.ps1\"",
-        "\"@echo off && powershell -NoProfile -ExecutionPolicy Bypass -Command `\"& `$SCOOP\\shims\\cli-proxy-api.ps1 %*`\"\" | Out-File -Encoding utf8 \"$env:SCOOP\\shims\\cli-proxy-api.bat\""
+        "Set-Content -Path \"$env:SCOOP\\shims\\cli-proxy-api.ps1\" -Value @'\nparam()\n$exe = \"', $dir, '\\cli-proxy-api.exe\" -join \"\"\n$cfg = \"', $persist_dir, '\\config.yaml\" -join \"\"\nif ($args -notcontains \"--config\") {\n    & $exe --config $cfg @args\n} else {\n    & $exe @args\n}\n'@ -Encoding utf8"
     ],
     "checkver": {
         "github": "https://github.com/router-for-me/CLIProxyAPI"
