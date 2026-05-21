@@ -10,16 +10,15 @@
         }
     },
     "bin": [
-        "cli-proxy-api.exe"
+        [
+            "cli-proxy-api.exe",
+            "cli-proxy-api",
+            "--config \"$persist_dir\\config.yaml\""
+        ]
     ],
-    "persist": [
-        "config.yaml"
-    ],
-    "pre_install": [
-        "if (-not (Test-Path \"$persist_dir/config.yaml\")) { Copy-Item \"$dir/config.example.yaml\" \"$persist_dir/config.yaml\" -Force }"
-    ],
+    "persist": "config.yaml",
     "post_install": [
-        "Set-Content -Path \"$env:SCOOP\\shims\\cli-proxy-api.ps1\" -Value @'\nparam()\n$exe = \"', $dir, '\\cli-proxy-api.exe\" -join \"\"\n$cfg = \"', $persist_dir, '\\config.yaml\" -join \"\"\nif ($args -notcontains \"--config\") {\n    & $exe --config $cfg @args\n} else {\n    & $exe @args\n}\n'@ -Encoding utf8"
+        "if (Test-Path \"$dir\\config.example.yaml\") { if (-not (Test-Path \"$persist_dir\\config.yaml\")) { Copy-Item \"$dir\\config.example.yaml\" \"$persist_dir\\config.yaml\" } }"
     ],
     "checkver": {
         "github": "https://github.com/router-for-me/CLIProxyAPI"
