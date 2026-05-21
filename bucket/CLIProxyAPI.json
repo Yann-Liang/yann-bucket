@@ -10,7 +10,7 @@
         }
     },
     "bin": [
-        "cli-proxy-api.ps1"
+        "cli-proxy-api.exe"
     ],
     "persist": [
         "config.yaml"
@@ -19,7 +19,10 @@
         "if (-not (Test-Path \"$persist_dir/config.yaml\")) { Copy-Item \"$dir/config.example.yaml\" \"$persist_dir/config.yaml\" -Force }"
     ],
     "post_install": [
-        "Set-Content -Path \"$dir/cli-proxy-api.ps1\" -Value @'\nparam()\n$config = Join-Path \"$persist_dir\" \"config.yaml\"\n$exe = \"$dir/cli-proxy-api.exe\"\nif ($args -notcontains \"--config\") {\n    & $exe --config $config @args\n} else {\n    & $exe @args\n}\n'@ -Encoding utf8"
+        "$p = \"$persist_dir\\config.yaml\"",
+        "$c = \"$dir\\cli-proxy-api.exe\"",
+        "\"`$a = `$args; if (`$a -notcontains '--config') { & `$c --config `$p @`$a } else { & `$c @`$a }\" | Out-File -Encoding utf8 \"$env:SCOOP\\shims\\cli-proxy-api.ps1\"",
+        "\"@echo off && powershell -NoProfile -ExecutionPolicy Bypass -Command `\"& `$SCOOP\\shims\\cli-proxy-api.ps1 %*`\"\" | Out-File -Encoding utf8 \"$env:SCOOP\\shims\\cli-proxy-api.bat\""
     ],
     "checkver": {
         "github": "https://github.com/router-for-me/CLIProxyAPI"
